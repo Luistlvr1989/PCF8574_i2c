@@ -39,7 +39,7 @@ void PCF8574_I2C::begin() {
 void PCF8574_I2C::pinMode(uint8_t pin, uint8_t mode) {
   switch (mode) {
     case INPUT:
-      readPins = bit(pin);
+      readPins |= bit(pin);
       writePins &= ~bit(pin);
       break;
   
@@ -74,4 +74,16 @@ byte PCF8574_I2C::readGPIO() {
   }
 
   return value;
+}
+
+void PCF8574_I2C::digitalWrite(uint8_t pin, uint8_t value) {
+  byte write = writePins & bit(pin);
+  
+  if (value) {
+    writePins |= write;
+  } else {
+    writePins &= ~write;
+  }
+
+  updateGPIO();
 }

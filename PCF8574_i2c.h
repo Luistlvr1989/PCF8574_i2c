@@ -59,6 +59,8 @@ class PCF8574_I2C {
     void pinMode(uint8_t pin, uint8_t mode);
 
     uint8_t digitalRead(uint8_t pin);
+
+    void digitalWrite(uint8_t pin, uint8_t value);
 };
 
 #endif
