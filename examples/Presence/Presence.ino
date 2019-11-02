@@ -2,14 +2,16 @@
 #include "Wire.h"
 #include "PCF8574_i2c.h"
 
-const int pcfAddress = 0x38;
 PCF8574_I2C pcf8574(0x38);
+
+unsigned long prevMillis = millis();
+uint8_t test = LOW;
 
 void setup() {
   Serial.begin(9600);
 
   pcf8574.begin();
-  pcf8574.pinMode(0, OUTPUT);
+  pcf8574.pinMode(0, INPUT);
   pcf8574.pinMode(7, INPUT);
 }
  
@@ -21,4 +23,16 @@ void loop() {
   Serial.println(value);
 
   delay(2000);
+
+  if (millis() > prevMillis + 5000) {
+    pcf8574.digitalWrite(0, test);
+    pcf8574.digitalWrite(7, test);
+  
+    if (test == LOW) 
+      test = HIGH;
+    else 
+      test = LOW;
+
+    prevMillis = millis();
+  }
 }
